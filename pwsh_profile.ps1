@@ -4,6 +4,8 @@ New-Alias -Name g -Value "git"
 
 New-Alias -Name l -Value "lazygit"
 
+New-Alias -Name d -Value "lazydocker"
+
 New-Alias -Name n -Value "nvim"
 
 set-alias -name p -value pnpm
@@ -16,9 +18,14 @@ function v {
     code .
 }
 
-function compress {
-	foreach ($f in Get-ChildItem) { ffmpeg -i $f.FullName "$($f.BaseName).webp" }
+function to:webp {
+    Get-ChildItem *.jpg,*.png,*.jpeg | ForEach-Object { ffmpeg -i $_.FullName ($_.BaseName + ".webp") }
 }
+
+function to:webm {
+    Get-ChildItem *.mkv,*.mp4,*.avi | ForEach-Object { ffmpeg -i $_.FullName -c:v libvpx-vp9 -c:a libopus ($_.BaseName + ".webm") }
+}
+
 
 function touch {
     param ([string]$filename)
